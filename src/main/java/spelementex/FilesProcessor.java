@@ -14,12 +14,11 @@ import org.apache.commons.io.FileUtils;
  * @author Jenny D'Souza
  */
 public class FilesProcessor {
-    
+
     public static final String[] XML_EXTENSION = new String[]{"xml"};    
-    
+
     public static Collection<File> getXMLFiles(File dir) {
         return FileUtils.listFiles(dir, XML_EXTENSION, true);
     }    
-    
-    
 }
+

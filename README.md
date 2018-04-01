@@ -19,9 +19,11 @@ The SpElementEx tool has been written in Java and is released as free software.
     
 2) To train and develop a new spatial element role extraction model, and annotate test data with spatial element roles using the newly developed model.
 
+    ```shell
     java main.java.spelementex.Main -annotators role -train <YOUR TRAIN DIRECTORY> -dev <YOUR DEVELOPMENT DIRECTORY> -test <YOUR TEST DIRECTORY>
-    
-`Please note: In this usage, the system requires the input training, development and test data to already have spatial element type annotations. If the input data does not have spatial element type annotations, then follow Usage 3 of the tool below.`
+    ```
+
+__Please note: In this usage, the system requires the input training, development and test data to already have spatial element type annotations. If the input data does not have spatial element type annotations, then follow Usage 3 of the tool below.__
     
 3) To train and develop a new spatial element type and role extraction model, and annotate test data with spatial element types and roles using the newly developed model.
 
@@ -29,17 +31,32 @@ The SpElementEx tool has been written in Java and is released as free software.
     
 4) To annotate test data using our pre-trained spatial element type extraction model.
 
+    ```shell
     java main.java.spelementex.Main -annotators type -test <YOUR TEST DIRECTORY>
     
+    # Example
+    java main.java.spelementex.Main -annotators type -test main/resources/space-eval/test
+    ```
+
 5) To annotate test data using our pre-trained spatial element role extraction model.
 
+    ```shell
     java main.java.spelementex.Main -annotators role -test <YOUR TEST DIRECTORY>
-    
-`Please note: In this usage, the system requires the input test data to already have spatial element type annotations. If the input test data does not have spatial element type annotations, then follow Usage 6 of the tool below.`
+
+    # Example
+    java main.java.spelementex.Main -annotators role -test main/resources/space-eval/test
+    ```
+
+__Please note: In this usage, the system requires the input test data to already have spatial element type annotations. If the input test data does not have spatial element type annotations, then follow Usage 6 of the tool below.__
 
 6) To annotate test data using our pre-trained spatial element type and role extraction models.
 
+    ```shell
     java main.java.spelementex.Main -annotators type,role -test <YOUR TEST DIRECTORY>
+
+    # Example
+    java main.java.spelementex.Main -annotators type,role -test main/resources/space-eval/test
+    ```
 
 #### About Sequence Labeling in SpElementEx:
 

@@ -126,12 +126,12 @@ public class Annotator {
             Map<Integer, CoreLabel> startOffsetParserLabel = sentenceStartOffsetParserLabel.get(sentence);
             
             for (String role : Evaluator.ROLE_C_MAP.keySet()) {
-                String[] result = FileUtils.readFileToString(new File(dataDir+"\\"+role+"Result.txt")).split("\\n");
+                String[] result = FileUtils.readFileToString(new File(dataDir+"/"+role+"Result.txt")).split("\\n");
                 roleIndexMap.put(role, document.setDocumentSpatialRoleAnnotations(tokenStartOffsetInfo, startOffsetParserLabel, 
                         role, !roleIndexMap.containsKey(role) ? 0 : roleIndexMap.get(role), result.length, result));
             }
             for (String otherRole : Evaluator.OTHERROLE_C_MAP.keySet()) {
-                String[] result = FileUtils.readFileToString(new File(dataDir+"\\"+otherRole+"ResultOther.txt")).split("\\n");
+                String[] result = FileUtils.readFileToString(new File(dataDir+"/"+otherRole+"ResultOther.txt")).split("\\n");
                 otherRoleIndexMap.put(otherRole, document.setDocumentSpatialRoleAnnotations(tokenStartOffsetInfo, startOffsetParserLabel, 
                         "", !otherRoleIndexMap.containsKey(otherRole) ? 0 : otherRoleIndexMap.get(otherRole), result.length, result));                
             }
@@ -171,19 +171,19 @@ public class Annotator {
             
             //prepare CRF test data file
             System.out.println("annotating "+file.getPath());
-            writeCrfRolesData(sentenceStartOffsetParserLabel, startOffsetSpatialElement, new FileOutputStream(dataDir+"\\test.txt"));
+            writeCrfRolesData(sentenceStartOffsetParserLabel, startOffsetSpatialElement, new FileOutputStream(dataDir+"/test.txt"));
             
             //generate result
             for (String r : Evaluator.ROLE_NBEST_MAP.keySet()) 
-                Evaluator.applyModel(Evaluator.ROLE_NBEST_MAP.get(r), modelDir+"\\"+r+"Model.txt", dataDir+"\\test.txt", dataDir+"\\"+r+"Result.txt");
+                Evaluator.applyModel(Evaluator.ROLE_NBEST_MAP.get(r), modelDir+"/"+r+"Model.txt", dataDir+"/test.txt", dataDir+"/"+r+"Result.txt");
             for (String r : Evaluator.OTHERROLE_NBEST_MAP.keySet()) 
-                Evaluator.applyModel(Evaluator.OTHERROLE_NBEST_MAP.get(r), modelDir+"\\"+r+"ModelOther.txt", dataDir+"\\test.txt", dataDir+"\\"+r+"ResultOther.txt");
+                Evaluator.applyModel(Evaluator.OTHERROLE_NBEST_MAP.get(r), modelDir+"/"+r+"ModelOther.txt", dataDir+"/test.txt", dataDir+"/"+r+"ResultOther.txt");
             
             //gathers all role annotations for spatial elements in this file
             annotateDocument(document, sentenceTokenStartOffsetInfo, sentenceStartOffsetParserLabel, dataDir);     
             
             //writes the annotations to output
-            String outputFileName = outputDir.toString()+"\\"+file.getName();
+            String outputFileName = outputDir.toString()+"/"+file.getName();
             document.writeRoleAnnotations(outputFileName);
         }
     }    
@@ -262,7 +262,7 @@ public class Annotator {
                     FileUtils.readFileToString(new File(seCrfResultFileName)).split("\\n"), 
                     FileUtils.readFileToString(new File(msCrfResultFileName)).split("\\n"));
                         
-            String outputFileName = outputDir.toString()+"\\"+file.getName(); //file.toString().substring(0, file.toString().lastIndexOf("."))+"_predict.xml";
+            String outputFileName = outputDir.toString()+"/"+file.getName(); //file.toString().substring(0, file.toString().lastIndexOf("."))+"_predict.xml";
             document.writeAnnotations(outputFileName);
         }
     }
@@ -298,16 +298,16 @@ public class Annotator {
             String line = result[j].trim();
             if (line.equals(""))
                 break;
-            
+
             if (i == j) {
                 offsets[0] = tokenNum;
                 continue;
             }
-            
+
             String[] lineTokens = line.split("\\s+");
             if (lineTokens[lineTokens.length-1].equals("O") || lineTokens[lineTokens.length-1].matches("B\\-.*"))
                 break;
-            
+
             tokenNum++;
         }
         offsets[1] = tokenNum;        

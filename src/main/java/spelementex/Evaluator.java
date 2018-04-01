@@ -274,16 +274,16 @@ public class Evaluator {
         double r = 0.0;
         double p = 0.0;
         //stores the total entities annotated in development data
-        double total = getTotal(FileUtils.readFileToString(new File(test)).split("\\n"));
+        double total = getTotal(FileUtils.readFileToString(new File(test)).split("\n"));
         
         for (String c_value : C_VALUES) {
             //train a model
-            String crf_command = Main.CRF_DIR+"\\crf_learn.exe -c "+c_value+" "+Main.TYPE_TEMPLATE_FILE+" "+train+" "+model;
+            String crf_command = Main.CRF_DIR+"/crf_learn -c "+c_value+" "+Main.TYPE_TEMPLATE_FILE+" "+train+" "+model;
             ExternalCommand.run(crf_command, null);
             
             for (int n = 1; n <= 50; n = n+2) {
                 //test the trained model with different n-best values
-                crf_command = Main.CRF_DIR+"\\crf_test.exe -n "+n+" -m "+model+" "+test;
+                crf_command = Main.CRF_DIR+"/crf_test -n "+n+" -m "+model+" "+test;
                 ExternalCommand.run(crf_command, new FileOutputStream(result));
 
                 //compute tp, fp, recall, precision and f-score of result from test
@@ -445,15 +445,15 @@ public class Evaluator {
         double p = 0.0;
         //stores the total entities annotated in development data
         double total = getTotal(FileUtils.readFileToString(new File(test)).split("\\n"));
-        
+
         for (String c_value : C_VALUES) {
             //train a model
-            String crf_command = Main.CRF_DIR+"\\crf_learn.exe -c "+c_value+" "+Main.ROLE_TEMPLATE_FILE+" "+train+" "+model;
+            String crf_command = Main.CRF_DIR+"/crf_learn -c "+c_value+" "+Main.ROLE_TEMPLATE_FILE+" "+train+" "+model;
             ExternalCommand.run(crf_command, null);
             
             for (int n = 1; n <= 51; n = n+5) {
                 //test the trained model with different n-best values
-                crf_command = Main.CRF_DIR+"\\crf_test.exe -n "+n+" -m "+model+" "+test;
+                crf_command = Main.CRF_DIR+"/crf_test -n "+n+" -m "+model+" "+test;
                 ExternalCommand.run(crf_command, new FileOutputStream(result));
 
                 //compute tp, fp, recall, precision and f-score of result from test
@@ -461,7 +461,7 @@ public class Evaluator {
                 double tempRecall = getRecall(tpFp[0], total);
                 double tempPrecision = getPrecision(tpFp[0], tpFp[1]);
                 double tempFscore = getFscore(tempRecall, tempPrecision);
-                                
+
                 //if new score is better than previous best score, then
                 //update previous best score to new score and 
                 //set c and nBest to current model parameter combination. 
@@ -478,7 +478,7 @@ public class Evaluator {
         Main.log.write(("best c-value: "+OTHERROLE_C_MAP.get(role)+"; best n: "+OTHERROLE_NBEST_MAP.get(role)+"\n").getBytes());
         Main.log.write(("r: "+r+"; p: "+p+"; f: "+bestFscore+"\n\n").getBytes());
     }    
-    
+
     /**
      * Develops the optimal model based on user-provided training and development data.
      * Tries all combinations of C_VALUES and N-best to find the combination that maximizes recall.
@@ -492,14 +492,14 @@ public class Evaluator {
         for (String role : SpatialRelation.ROLE_OVERLAP_ROLES_MAP.keySet()) {
             
             if (!role.equals("trigger_link")) {
-                develop(role, outputDir+"\\"+role+"TrainOther.txt", outputDir+"\\"+role+"ModelOther.txt", 
-                        outputDir+"\\"+role+"TestOther.txt", outputDir+"\\"+role+"ResultOther.txt");
+                develop(role, outputDir+"/"+role+"TrainOther.txt", outputDir+"/"+role+"ModelOther.txt", 
+                        outputDir+"/"+role+"TestOther.txt", outputDir+"/"+role+"ResultOther.txt");
             }
             
-            String train = outputDir+"\\"+role+"Train.txt";
-            String model = outputDir+"\\"+role+"Model.txt";
-            String test = outputDir+"\\"+role+"Test.txt";
-            String result = outputDir+"\\"+role+"Result.txt";
+            String train = outputDir+"/"+role+"Train.txt";
+            String model = outputDir+"/"+role+"Model.txt";
+            String test = outputDir+"/"+role+"Test.txt";
+            String result = outputDir+"/"+role+"Result.txt";
             
             double bestFscore = 0.0;    
             double r = 0.0;
@@ -509,12 +509,12 @@ public class Evaluator {
 
             for (String c_value : C_VALUES) {
                 //train a model
-                String crf_command = Main.CRF_DIR+"\\crf_learn.exe -c "+c_value+" "+Main.ROLE_TEMPLATE_FILE+" "+train+" "+model;
+                String crf_command = Main.CRF_DIR+"/crf_learn -c "+c_value+" "+Main.ROLE_TEMPLATE_FILE+" "+train+" "+model;
                 ExternalCommand.run(crf_command, null);
 
                 for (int n = 1; n <= 51; n = n+5) {
                     //test the trained model with different n-best values
-                    crf_command = Main.CRF_DIR+"\\crf_test.exe -n "+n+" -m "+model+" "+test;
+                    crf_command = Main.CRF_DIR+"/crf_test -n "+n+" -m "+model+" "+test;
                     ExternalCommand.run(crf_command, new FileOutputStream(result));
 
                     //compute tp, fp, recall, precision and f-score of result from test
@@ -544,12 +544,12 @@ public class Evaluator {
     }    
     
     public static void train(String c_value, String template, String train, String model) {
-        String crf_command = Main.CRF_DIR+"\\crf_learn.exe -c "+c_value+" "+template+" "+train+" "+model;
+        String crf_command = Main.CRF_DIR+"/crf_learn -c "+c_value+" "+template+" "+train+" "+model;
         ExternalCommand.run(crf_command, null);
     }    
     
     public static void applyModel(int n_value, String model, String test, String result) throws FileNotFoundException {
-        String crf_command = Main.CRF_DIR+"\\crf_test.exe -n "+n_value+" -m "+model+" "+test;
+        String crf_command = Main.CRF_DIR+"/crf_test -n "+n_value+" -m "+model+" "+test;
         ExternalCommand.run(crf_command, new FileOutputStream(result));        
     }
     
@@ -569,9 +569,9 @@ public class Evaluator {
             if (!role.equals("trigger_link")) {
                 Main.log.write(("for non-overlapping roles with "+role+"\n").getBytes());
                 
-                String model = outputDir+"\\"+role+"ModelOther.txt";
-                String test = outputDir+"\\"+role+"TestOther.txt";
-                String result = outputDir+"\\"+role+"ResultOther.txt";                
+                String model = outputDir+"/"+role+"ModelOther.txt";
+                String test = outputDir+"/"+role+"TestOther.txt";
+                String result = outputDir+"/"+role+"ResultOther.txt";                
                 
                 applyModel(OTHERROLE_NBEST_MAP.get(role), model, test, result);
                 evaluate("", test, result);
@@ -580,9 +580,9 @@ public class Evaluator {
             
             Main.log.write(("for role: "+role+"\n").getBytes());
             
-            String model = outputDir+"\\"+role+"Model.txt";
-            String test = outputDir+"\\"+role+"Test.txt";
-            String result = outputDir+"\\"+role+"Result.txt";
+            String model = outputDir+"/"+role+"Model.txt";
+            String test = outputDir+"/"+role+"Test.txt";
+            String result = outputDir+"/"+role+"Result.txt";
 
             applyModel(ROLE_NBEST_MAP.get(role), model, test, result);
             evaluate(role, test, result);            

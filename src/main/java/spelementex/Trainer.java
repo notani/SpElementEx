@@ -142,9 +142,9 @@ public class Trainer {
     public void clearCrfRoleDataFiles(String dataDir, boolean train) throws FileNotFoundException {
         String ext = train ? "Train" : "Test";
         for (String role : SpatialRelation.ROLE_OVERLAP_ROLES_MAP.keySet()) {
-            new FileOutputStream(dataDir+"\\"+role+ext+".txt");
+            new FileOutputStream(dataDir+"/"+role+ext+".txt");
             if (!role.equals("trigger_link"))
-                new FileOutputStream(dataDir+"\\"+role+ext+"Other.txt");        
+                new FileOutputStream(dataDir+"/"+role+ext+"Other.txt");        
         }
     }
     
@@ -184,10 +184,10 @@ public class Trainer {
                 Set<String> nonOverlapRoles = new HashSet<>(allRolesSet);
                 nonOverlapRoles.removeAll(overlapRoles);
                 nonOverlapRoles.remove(role);
-                                
-                FileOutputStream output = new FileOutputStream(dataDir+"\\"+role+ext+".txt", true);
-                FileOutputStream outputOther = overlapRoles.contains("null") ? null : new FileOutputStream(dataDir+"\\"+role+ext+"Other.txt", true);
-                
+
+                FileOutputStream output = new FileOutputStream(dataDir+"/"+role+ext+".txt", true);
+                FileOutputStream outputOther = overlapRoles.contains("null") ? null : new FileOutputStream(dataDir+"/"+role+ext+"Other.txt", true);
+
                 SpatialElement se = null;
 
                 String roleFeatureStr = "";            
